@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search Video...">
+  </div>
+  <div id="loading-spinner" class="spinner"></div>
+  <div class="spinner-text">Yükleniyor...</div>
+  <div id="video-list" class="video-list" style="display: none;"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const loadVideos = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const parentDir = urlParams.get('dir');
+      const videoPaths = await ipcRenderer.invoke('get-videos');
+      const videos = videoPaths[parentDir] || [];
+      const videoList = document.getElementById('video-list');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const spinnerText = document.querySelector('.spinner-text');
+      
+      videoList.innerHTML = '';
+  
+      document.title = parentDir;
+
+      const createThumbnail = (video) => {
+        return new Promise((resolve) => {
+          const thumbnail = document.createElement('img');
+          thumbnail.className = 'thumbnail';
+
+          const videoElement = document.createElement('video');
+          videoElement.src = video;
+          videoElement.preload = 'metadata';
+
+          videoElement.addEventListener('loadedmetadata', () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            videoElement.currentTime = 0.1;
+
+            videoElement.onseeked = () => {
+              requestAnimationFrame(() => {
+                const scale = 0.2; // Thumbnail boyutunu küçültme
+                canvas.width = videoElement.videoWidth * scale;
+                canvas.height = videoElement.videoHeight * scale;
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                thumbnail.src = canvas.toDataURL();
+                resolve(thumbnail);
+              });
+            };
+          });
+        });
+      };
+
+      const videoPromises = videos.map(async (video) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+          ipcRenderer.send('open-playback-window', video);
+        });
+
+        const thumbnail = await createThumbnail(video);
+        const videoTitle = document.createElement('h2');
+        videoTitle.textContent = video.split('/').pop();
+
+        card.appendChild(thumbnail);
+        card.appendChild(videoTitle);
+
+        return card;
+      });
+
+      const videoCards = await Promise.all(videoPromises);
+      requestAnimationFrame(() => {
+        videoCards.forEach(card => videoList.appendChild(card));
+        loadingSpinner.style.display = 'none';
+        spinnerText.style.display = 'none';
+        videoList.style.display = 'grid';
+      });
+
+      const searchInput = document.getElementById('search-input');
+
+      searchInput.addEventListener('input', () => filterAndSortVideos(videoCards));
+
+      const filterAndSortVideos = (videoCards) => {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        const filteredVideos = videoCards.filter(card => {
+          const title = card.querySelector('h2').textContent.toLowerCase();
+          return title.includes(searchTerm);
+        });
+
+        const sortedVideos = filteredVideos.sort((a, b) => {
+          const titleA = a.querySelector('h2').textContent.toLowerCase();
+          const titleB = b.querySelector('h2').textContent.toLowerCase();
+
+        });
+
+        videoList.innerHTML = '';
+        sortedVideos.forEach(card => videoList.appendChild(card));
+      };
+    };
+
+    loadVideos();
+  </script>
+</body>
+</html>

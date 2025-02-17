@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidiFusion</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div id="loading-spinner" class="spinner"></div>
+  <div class="spinner-text">Yükleniyor...</div>
+
+  <div id="video-list" class="video-list" style="display: none;"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const loadVideos = async () => {
+      const videoPaths = await ipcRenderer.invoke('get-videos');
+      const videoList = document.getElementById('video-list');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const spinnerText = document.querySelector('.spinner-text');
+      
+      videoList.innerHTML = ''; // Clear existing content
+
+      Object.entries(videoPaths).forEach(([parentDir, videos]) => {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = `videos.html?dir=${encodeURIComponent(parentDir)}`;
+
+        const folderIcon = document.createElement('i');
+        folderIcon.className = 'fas fa-folder folder-icon';
+
+        const dirHeader = document.createElement('h2');
+        dirHeader.textContent = parentDir;
+
+        card.appendChild(folderIcon);
+        card.appendChild(dirHeader);
+
+        videoList.appendChild(card);
+      });
+
+      loadingSpinner.style.display = 'none'; // Hide loading spinner
+      spinnerText.style.display = 'none'; // Hide loading text
+      videoList.style.display = 'grid'; // Show video list
+    };
+
+    loadVideos();
+  </script>
+</body>
+</html>

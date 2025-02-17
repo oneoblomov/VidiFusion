@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/style.css">
+  <title>URL Girişi</title>
+</head>
+<body>
+  <form id="url-form">
+    <h1>Video URL'si Girin</h1>
+    <input type="text" id="url-input" placeholder="URL" required>
+    <button type="submit">Aç</button>
+  </form>
+  <script>
+    const { ipcRenderer, clipboard } = require('electron');
+
+    // Panodaki metnin geçerli bir URL olup olmadığını kontrol et
+    const clipboardText = clipboard.readText();
+    try {
+      new URL(clipboardText);
+      document.getElementById('url-input').value = clipboardText;
+    } catch (e) {
+      console.log('Panodaki metin geçerli bir URL değil.');
+    }
+
+    document.getElementById('url-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const url = document.getElementById('url-input').value;
+      ipcRenderer.send('open-url', url);
+      window.close();
+    });
+  </script>
+</body>
+</html>
