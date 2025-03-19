@@ -1,27 +1,45 @@
+/* CSS Variables for a modern palette */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333;
+  --accent-color: #007bff;
+  --accent-hover: #0056b3;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --border-radius: 10px;
+}
+
+/* Global Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
+/* Modern Body */
 body {
   font-family: 'Ubuntu', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 20px;
 }
+
+/* Modern Algorithm Selector */
 #algorithm-selector {
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
+  border-radius: var(--border-radius);
+  background: var(--bg-color);
   font-family: inherit;
   margin-bottom: 20px;
   width: 100%;
   max-width: 300px;
 }
+
+/* Modern Media Container */
 .media-container {
   display: flex;
   gap: 20px;
@@ -29,21 +47,28 @@ body {
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
+
+/* Modern Video Container */
 .video-container {
   position: relative;
   width: 100%;
   max-width: 640px;
   background: #000;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px var(--shadow-medium);
 }
-#manipulated-canvas, #hidden-video {
+
+/* Canvas & Video settings */
+#manipulated-canvas, 
+#hidden-video {
   width: 100%;
   height: auto;
   aspect-ratio: 16/9;
   display: block;
 }
+
+/* Modern Video Controls */
 #controls {
   position: absolute;
   bottom: 0;
@@ -52,8 +77,11 @@ body {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
   opacity: 0;
+}
+.video-container:hover #controls {
+  opacity: 1;
 }
 .controls-row {
   display: flex;
@@ -65,20 +93,23 @@ button {
   background: none;
   border: none;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
-  color: white;
+  color: #fff;
 }
 button:hover {
   background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
 }
 button svg {
   width: 24px;
   height: 24px;
 }
+
+/* Modern Time Range Slider */
 #time-range {
   flex-grow: 1;
   height: 4px;
@@ -90,12 +121,19 @@ button svg {
 }
 #time-range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  background: #5e5e5e;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-color);
+  border: 2px solid #fff;
   border-radius: 50%;
   cursor: pointer;
+  transition: transform 0.2s;
 }
+#time-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+/* Modern Checkbox Group */
 .checkbox-group {
   display: flex;
   gap: 20px;
@@ -108,9 +146,12 @@ button svg {
   gap: 6px;
   white-space: nowrap;
 }
+
+/* Modern Time Display */
 .time-display {
   font-family: monospace;
   font-size: 0.9em;
   color: #ccc;
   margin-left: auto;
 }
+

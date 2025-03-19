@@ -1,0 +1,52 @@
+{
+  "platform": {
+    "linux": {
+      "searchAreas": [
+        [
+          "/home",
+          "_userName_",
+          "Videos",
+          1
+        ],
+        [
+          "/home",
+          "_userName_",
+          "Downloads",
+          1
+        ]
+      ]
+    },
+    "windows": {
+      "searchAreas": [
+        [
+          "C:\\Users",
+          "_userName_",
+          "Videos",
+          1
+        ],
+        [
+          "C:\\Users",
+          "_userName_",
+          "Downloads",
+          1
+        ]
+      ]
+    },
+    "mac": {
+      "searchAreas": [
+        [
+          "/Users",
+          "_userName_",
+          "Videos",
+          1
+        ],
+        [
+          "/Users",
+          "_userName_",
+          "Downloads",
+          1
+        ]
+      ]
+    }
+  }
+}

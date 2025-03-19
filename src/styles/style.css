@@ -2,15 +2,15 @@
 :root {
   --primary-color: #007bff;
   --primary-hover-color: #0056b3;
-  --background-color: #f4f4f9;
+  --background-color: #f7f7f7;
   --text-color: #333;
   --card-background: #fff;
   --card-shadow: rgba(0, 0, 0, 0.1);
-  --border-radius: 12px;
+  --border-radius: 8px;
   --font-family: 'Roboto', sans-serif;
-  --button-padding: 12px 24px;
-  --spinner-size: 100px;
-  --spinner-thickness: 8px;
+  --button-padding: 10px 20px;
+  --spinner-size: 80px;
+  --spinner-thickness: 6px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,20 +30,14 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;
-  padding-top: 80px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 80px 20px 0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  position: relative;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
   user-select: none;
 }
 
 button, a, input, textarea {
-  -webkit-user-select: auto;
   user-select: auto;
 }
 
@@ -90,7 +84,6 @@ button:hover {
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  text-decoration: none;
   color: inherit;
 }
 
@@ -178,22 +171,6 @@ body::-webkit-scrollbar-thumb {
   border: 3px solid var(--background-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  body::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  body::-webkit-scrollbar-track {
-    background: var(--background-color);
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color);
-    border-radius: 10px;
-    border: 3px solid var(--background-color);
-  }
-}
-
 /* Spinner Styles */
 .spinner {
   width: var(--spinner-size);
@@ -204,6 +181,7 @@ body::-webkit-scrollbar-thumb {
   animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
   margin: 20px auto;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -246,8 +224,8 @@ form {
   align-items: center;
   background: #fff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 400px;
 }
@@ -270,7 +248,7 @@ form input {
 form button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -280,5 +258,5 @@ form button {
 }
 
 form button:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover-color);
 }
